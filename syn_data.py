@@ -35,7 +35,10 @@ df=pd.concat([skew_data,df],ignore_index=True)
 #generated duplicates with different values
 
 duplicate_unfiltered_rows=np.random.sample(len(dp))<0.1
-duplicate_rows=df.loc[]
+duplicate_rows=df.loc[duplicate_unfiltered_rows]
+duplicate_subset=df.sample(n=duplicate_rows)
+
+duplicate_data=pd.concat([duplicate_subset]*20,ignore_index=True)
 
 
 

@@ -15,30 +15,29 @@ syn_subset = [
     for i in range(sample)
 ]
 
-syn_data = pd.concat(syn_subset, ignore_index=True)
-df = pd.concat([df_tran, syn_data], ignore_index=True)
+syn_df = pd.concat(syn_subset, ignore_index=True)
+df = pd.concat([df_tran, syn_df], ignore_index=True)
 print(df.count())
 
 #generated nulls
-null_unfiltered_rows=np.random.sample(len(df))<0.2# note - means select 20 percent of random rows from total
-null_rows=df.loc[null_unfiltered_rows]
-df=df.loc[null_rows,["merchant","category"
-]]=None
-
+null_rows=np.random.sample(len(df))<0.2# note - means select 20 percent of random rows from total
+null_df=df.loc[null_rows].copy()
+null_df["merchant"]=None
+null_df["category"]=None
+df = pd.concat([df, null_df], ignore_index=True)
 #generated skew data
-skew_unfiltered_rows=np.random.sample(len(df))<0.02
-skew_rows=df.loc[skew_unfiltered_rows]
-skew_subset=df.sample(n=skew_rows)
-skew_data=pd.concat([skew_subset]*50,ignore_index=True)
+skew_rows=np.random.sample(len(df))<0.02
+skew_df=df.loc[skew_rows].copy()
+skew_data=pd.concat([skew_df]*50,ignore_index=True)
 df=pd.concat([skew_data,df],ignore_index=True)
 
 #generated duplicates with different values
 
-duplicate_unfiltered_rows=np.random.sample(len(dp))<0.1
-duplicate_rows=df.loc[duplicate_unfiltered_rows]
-duplicate_subset=df.sample(n=duplicate_rows)
-
-duplicate_data=pd.concat([duplicate_subset]*20,ignore_index=True)
+duplicate_rows=np.random.sample(len(df))<0.1
+duplicate_df=df.loc[duplicate_rows].copy()
+duplicate_df["amt"]=duplicate_df["amt"]*50
+duplicate_data=pd.concat([duplicate_df]*10,ignore_index=True)
+df=pd.concat([duplicate_data,df],ignore_index=True)
 
 
 

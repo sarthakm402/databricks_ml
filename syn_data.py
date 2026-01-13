@@ -6,6 +6,8 @@ df_tran=pd.read_csv(r"/mnt/c/Users/sarthak mohapatra/Downloads/archive/fraudTrai
 # print(len(df_tran))
 # print(df_tran.count())
 # print(df_tran.info())
+# print(df_tran.head())
+df_tran["event_ts"]=pd.to_datetime(df_tran["trans_date_trans_time"])
 rows=10000
 sample=5
 np.random.seed(42)
@@ -38,6 +40,13 @@ duplicate_df=df.loc[duplicate_rows].copy()
 duplicate_df["amt"]=duplicate_df["amt"]*50
 duplicate_data=pd.concat([duplicate_df]*10,ignore_index=True)
 df=pd.concat([duplicate_data,df],ignore_index=True)
+
+#generatting late arrival events
+late_rows = np.random.sample(len(df)) < 0.1
+late_df = df.loc[late_rows].copy()
+late_df['event_ts'] -= pd.to_timedelta(np.random.randint(1, 4, size=len(late_df)), unit='D')
+df = pd.concat([df, late_df], ignore_index=True)
+
 
 
 

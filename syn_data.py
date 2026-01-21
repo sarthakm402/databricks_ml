@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import random
-df_tran=pd.read_csv(r"/mnt/c/Users/sarthak mohapatra/Downloads/archive/fraudTrain.csv")
+df_tran=pd.read_csv(r"/mnt/c/Users/sarthak mohapatra/Downloads/archive/fraudTrain.csv") 
 # print(df_tran.iloc[:,2].count())
 # print(len(df_tran))
 # print(df_tran.count())

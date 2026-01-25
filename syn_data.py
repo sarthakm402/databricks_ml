@@ -61,7 +61,7 @@ late_df["event_ts"] -= pd.to_timedelta(
 df = pd.concat([df, late_df], ignore_index=True)
 
 # write corrupted raw dataset
-df.to_parquet(
-    r"/mnt/c/Users/sarthak mohapatra/Downloads/archive/fraudTrain_raw_corrupted_v1.parquet",
+df.to_csv(
+    r"/mnt/c/Users/sarthak mohapatra/Downloads/archive/fraudTrain_raw_corrupted_v1.csv",
     index=False
 )

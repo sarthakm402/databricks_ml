@@ -23,7 +23,7 @@ for row in config_df.collect():
         .option("inferSchema", True)
         .load(row["source_path"])
         .withColumnRenamed("Unnamed: 0","id")
-        .withColumn("ingestion_ts", F.current_timestamp())
+        .withColumn("ingestion_ts", F.col("_metadata.file_modification_time"))
         .withColumn("source_file", F.col("_metadata.file_path"))
     )
 

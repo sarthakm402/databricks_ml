@@ -2,7 +2,7 @@
 # %sql
 # create schema if not exists sarthak_dev.update
 
-#  %sql
+#  %sql 
 #  create table if not exists sarthak_dev.update.watermark_table(
 #    pipeline_id STRING,
 #    last_ingestion_ts TIMESTAMP

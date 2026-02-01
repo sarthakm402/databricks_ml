@@ -6,7 +6,7 @@ from torch.utils.data import Dataset, DataLoader
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 
-df = pd.read_csv("/mnt/c/Users/sarthak mohapatra/Downloads/archive/silver_file.csv")
+df = pd.read_csv("csv file path")
 # print(df.columns)
 LABEL_COL = "is_fraud"
 TIME_COL = "event_ts"

@@ -7,7 +7,7 @@ from pyspark.sql.types import (
     IntegerType
 )
 
-
+ 
 
 config_df = (
     spark.table("sarthak_dev.config.bronze_ingestion_config")

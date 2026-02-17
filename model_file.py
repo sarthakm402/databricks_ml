@@ -6,7 +6,7 @@ from torch.utils.data import Dataset, DataLoader
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 
-df = pd.read_csv("csv file path")
+df = pd.read_csv("/home/sarthak/Desktop/work/archive/silver_file.csv")
 # print(df.columns)
 LABEL_COL = "is_fraud"
 TIME_COL = "event_ts"
@@ -44,6 +44,7 @@ X_val = X[split_idx:]
 y_train = y[:split_idx]
 y_val = y[split_idx:]
 pos_weight = (len(y_train) - y_train.sum()) / y_train.sum()
+
 class Frauddataset(Dataset):
     def __init__(self,X,y):
         self.X = torch.tensor(X, dtype=torch.float32)

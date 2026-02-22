@@ -13,11 +13,9 @@ def bootstrap_pipeline(spark, row):
 
     print(f"[BOOTSTRAP] Starting pipeline: {pipeline_id}")
 
-    # 1️⃣ Validate bronze table exists
     if not spark.catalog.tableExists(bronze_table):
         raise Exception(f"Bronze table does not exist: {bronze_table}")
 
-    # 2️⃣ Read full bronze
     bronze_df = (
         spark.read.table(bronze_table)
         .withColumn("ingestion_ts", F.col("ingestion_ts").cast("timestamp"))
@@ -26,8 +24,6 @@ def bootstrap_pipeline(spark, row):
     if bronze_df.limit(1).count() == 0:
         print(f"[BOOTSTRAP] Bronze table empty for {pipeline_id}")
         return
-
-    # 3️⃣ Deduplicate latest per business key
     bronze_latest = (
         bronze_df
         .withColumn(
@@ -41,14 +37,8 @@ def bootstrap_pipeline(spark, row):
         .drop("row_number")
         .withColumn("silver_ingestion_ts", F.current_timestamp())
     )
-
-    # 4️⃣ Create silver table (overwrite safe for bootstrap)
     bronze_latest.write.format("delta").mode("overwrite").saveAsTable(silver_table)
-
-    # 5️⃣ Compute watermark
     max_ts = bronze_df.agg(F.max("ingestion_ts").alias("max_ts")).first()["max_ts"]
-
-    # 6️⃣ Upsert watermark safely using Delta API
     watermark_df = spark.createDataFrame(
         [(pipeline_id, max_ts)],
         ["pipeline_id", "last_ingestion_ts"]
